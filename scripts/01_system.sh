@@ -11,3 +11,7 @@ sudo mariadb-secure-installation
 
 # php
 sudo apt install libapache2-mod-php php-mysql
+
+#installation de restic
+sudo apt-get install -y restic
+restic version
