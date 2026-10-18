@@ -1,6 +1,6 @@
 #!/bin/bash
 # --- VARIABLES ---
-IMAGE="/usr/share/backgrounds/mon_fond.jpg"
+IMAGE="background.png"
 POLICE="Ubuntu"
 TAILLE_POLICE=11
 HAUTEUR_BARRE=32
