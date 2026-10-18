@@ -109,5 +109,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-. "$HOME/.atuin/bin/env"
-eval "$(atuin init bash)"
+if [ -f "$HOME/.atuin/bin/env" ]; then
+    . "$HOME/.atuin/bin/env"
+    command -v atuin &>/dev/null && eval "$(atuin init bash)"
+fi
