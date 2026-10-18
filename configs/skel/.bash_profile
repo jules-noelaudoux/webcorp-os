@@ -38,6 +38,9 @@ alias ll='ls -lah --color=auto'
 alias la='ls -A --color=auto'
 alias l='ls -CF --color=auto'
 alias grep='grep --color=auto'
+alias sites='cd /var/www/html'
+alias backup-now='sudo /usr/local/bin/webcorp-backup.sh'
+alias backup-list='sudo /usr/local/bin/webcorp-backup-list.sh'
 
 # Éditeur par défaut
 export EDITOR=nano

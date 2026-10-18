@@ -37,7 +37,7 @@ phpenmod mbstring || true
 # ABrowser en français
 apt-get install -y abrowser-locale-fr || apt-get install -y firefox-locale-fr || true
 
-# Extension uBlock Origin par défaut via les policies de Mozilla
+# Extension uBlock Origin par défaut via les policies Mozilla
 mkdir -p /etc/abrowser/policies /etc/firefox/policies
 cat << 'EOF' > /etc/abrowser/policies/policies.json
 {
@@ -53,6 +53,13 @@ cat << 'EOF' > /etc/abrowser/policies/policies.json
 EOF
 cp /etc/abrowser/policies/policies.json /etc/firefox/policies/policies.json 2>/dev/null || true
 
+# Téléchargement local du .xpi de uBlock Origin pour installation hors-ligne
+XPI_URL="https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
+for EXT_DIR in "/usr/lib/abrowser/distribution/extensions" "/usr/lib/firefox/distribution/extensions" "/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"; do
+    mkdir -p "$EXT_DIR"
+    wget -q -O "$EXT_DIR/uBlock0@raymondhill.net.xpi" "$XPI_URL" 2>/dev/null || true
+done
+
 # Forge logicielle Forgejo
 echo "Installation de Forgejo..."
 FORGEJO_VERSION="9.0.0"
@@ -63,13 +70,47 @@ if [ -f /usr/local/bin/forgejo ]; then
     # Utilisateur et répertoires de Forgejo
     id git &>/dev/null || adduser --system --shell /bin/bash --group --disabled-password --home /home/git git
     mkdir -p /var/lib/forgejo/{data,custom,indexers,log} /etc/forgejo
+
+    # Configuration par défaut prête à l'emploi (évite l'écran d'installation initial)
+    cat << 'EOF' > /etc/forgejo/app.ini
+APP_NAME = Webcorp Forge
+RUN_USER = git
+WORK_PATH = /var/lib/forgejo
+RUN_MODE = prod
+
+[database]
+DB_TYPE = sqlite3
+PATH = /var/lib/forgejo/data/forgejo.db
+
+[repository]
+ROOT = /var/lib/forgejo/data/repositories
+
+[server]
+SSH_DOMAIN = localhost
+DOMAIN = localhost
+HTTP_PORT = 3000
+ROOT_URL = http://localhost:3000/
+DISABLE_SSH = false
+SSH_PORT = 22
+
+[service]
+DISABLE_REGISTRATION = false
+REQUIRE_SIGNIN_VIEW = false
+
+[security]
+INSTALL_LOCK = true
+SECRET_KEY = webcorp-secret-key-sae103
+INTERNAL_TOKEN = webcorp-internal-token-sae103
+EOF
+
     chown -R git:git /var/lib/forgejo /etc/forgejo
     chmod 750 /var/lib/forgejo
+    chmod 640 /etc/forgejo/app.ini
 
     # Service systemd pour lancer Forgejo au démarrage
     cat << 'EOF' > /etc/systemd/system/forgejo.service
 [Unit]
-Description=Forgejo
+Description=Forgejo Git Service
 After=network.target mariadb.service
 
 [Service]

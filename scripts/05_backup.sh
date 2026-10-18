@@ -42,6 +42,15 @@ echo "Sauvegarde terminée le $(date)"
 EOF
 chmod 750 /usr/local/bin/webcorp-backup.sh
 
+# Script utilitaire pour lister les sauvegardes facilement
+cat << 'EOF' > /usr/local/bin/webcorp-backup-list.sh
+#!/bin/bash
+source /etc/webcorp/backup.env
+export RESTIC_REPOSITORY RESTIC_PASSWORD
+restic snapshots
+EOF
+chmod 750 /usr/local/bin/webcorp-backup-list.sh
+
 # Service systemd
 cat << 'EOF' > /etc/systemd/system/webcorp-backup.service
 [Unit]
