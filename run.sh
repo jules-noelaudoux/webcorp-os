@@ -14,3 +14,12 @@ chmod +x scripts/*.sh
 ./scripts/05_backup.sh
 
 echo "=== Installation terminée avec succès ! ==="
+
+echo "=== Nettoyage ==="
+
+cd /root
+rm -rf /root/webcorp-os
+apt-get clean
+rm -rf /var/lib/apt/lists/*
+
+echo "=== Nettoyage terminé ==="
