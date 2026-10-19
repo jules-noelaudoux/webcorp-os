@@ -4,7 +4,10 @@ Projet de **SAE 103** (BUT 1 Informatique) réalisé par **Jules**, **Joey** et 
 
 Ce projet permet de créer une distribution Linux sur-mesure basée sur **Trisquel 12 LTS Ecne Mini** pour équiper les ordinateurs portables des développeurs web de l'entreprise fictive **Webcorp**.
 
----
+## TODO
+
+- [ ] Installer Kodi
+- [ ] Configurer Kodi
 
 ## Ce qui est installé et configuré
 
