@@ -113,3 +113,8 @@ if [ -f "$HOME/.atuin/bin/env" ]; then
     . "$HOME/.atuin/bin/env"
     command -v atuin &>/dev/null && eval "$(atuin init bash)"
 fi
+
+# Chargement du profil Webcorp (alias, prompt et variables)
+if [ -f "$HOME/.bash_profile" ]; then
+    . "$HOME/.bash_profile"
+fi
