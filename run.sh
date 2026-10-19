@@ -12,6 +12,7 @@ chmod +x scripts/*.sh
 ./scripts/03_branding.sh
 ./scripts/04_skel.sh
 ./scripts/05_backup.sh
+./scripts/06_kodi.sh
 
 echo "=== Installation terminée avec succès ! ==="
 
