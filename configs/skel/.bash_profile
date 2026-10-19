@@ -28,6 +28,9 @@ RESET="\[\e[0m\]"
 # Branche Git
 parse_git_branch() {
     git branch 2>/dev/null | sed -n '/\* /s///p'
+    if [ -n "$branch" ]; then
+        printf 'git:(%s)' "$branch"
+    fi
 }
 
 # Prompt personnalisé
