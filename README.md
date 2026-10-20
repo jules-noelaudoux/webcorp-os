@@ -9,6 +9,8 @@ Le système est conçu comme un poste de travail prêt à l'emploi pour les dév
 
 - [ ] Installer Kodi
 - [ ] Configurer Kodi
+- [ ] Page d'accueil locale du portail développeur (index.html)
+- [ ] Script de diagnostic des services (webcorp-status)
 - [ ] Derniers checks
 
 ---
@@ -21,7 +23,6 @@ Le système est conçu comme un poste de travail prêt à l'emploi pour les dév
   - **Geany** : éditeur de code léger avec coloration syntaxique et plugins.
   - **Forgejo** : forge logicielle Git locale auto-hébergée (`http://localhost:3000`).
 - **Espace de travail `/var/www/html`** : droits configurés (groupe `www-data`, permissions `775` et setgid) permettant aux utilisateurs de créer et modifier leurs sites sans `sudo`.
-- **Portail développeur local** : page d'accueil accessible sur `http://localhost/` avec accès rapides vers les projets, phpMyAdmin, Forgejo, la configuration PHP et les aide-mémoires.
 - **Navigateur ABrowser** : dérivé libre de Firefox, configuré par défaut en français et équipé de l'extension **uBlock Origin**.
 - **Sauvegarde chiffrée (Restic)** : sauvegarde automatique quotidienne programmée à 2h du matin (`webcorp-backup.timer`) avec chiffrement AES-256 et politique de rétention.
 - **Personnalisation graphique** :
@@ -37,7 +38,6 @@ Le système est conçu comme un poste de travail prêt à l'emploi pour les dév
 | Commande | Action |
 | :--- | :--- |
 | `sites` | Se place directement dans `/var/www/html` pour travailler sur les projets web. |
-| `webcorp-status` | Affiche l'état des services (Apache, MariaDB, Forgejo, droits `/var/www/html`, timer de sauvegarde). |
 | `backup-now` | Déclenche immédiatement une sauvegarde chiffrée complète (bases SQL, `/var/www/html`, configs, Forgejo). |
 | `backup-list` | Affiche l'historique des snapshots Restic avec date et taille. |
 | `mariadb` | Connexion directe au client SQL sans mot de passe via le fichier `~/.my.cnf`. |
@@ -57,7 +57,7 @@ Deux aide-mémoires au format Markdown sont fournis sur le Bureau et dans le dos
 
 Le scénario de test pour la soutenance s'articule autour des étapes suivantes :
 1. **Démarrage et environnement** : vérifier le thème graphique (barre en haut, fond d'écran), les raccourcis du Bureau et l'accueil dans le terminal.
-2. **État des services** : lancer `webcorp-status` pour s'assurer qu'Apache, MariaDB et Forgejo tournent.
+2. **État des services** : vérifier qu'Apache (`systemctl status apache2`), MariaDB et Forgejo sont bien actifs.
 3. **Développement Web** : taper `sites`, créer un fichier dans `/var/www/html` sans `sudo`, et l'ouvrir sur `http://localhost/`.
 4. **Base de données** : tester la connexion SQL via la commande `mariadb`, puis sur l'interface `http://localhost/phpmyadmin` avec le compte `admin_local`.
 5. **Forge logicielle** : ouvrir Forgejo sur `http://localhost:3000`.

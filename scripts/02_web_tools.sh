@@ -25,55 +25,6 @@ phpinfo();
 EOF
 chown root:www-data /var/www/html/info.php
 
-# Portail local d'accueil développeur sur http://localhost/
-cat << 'EOF' > /var/www/html/index.html
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webcorp - Portail Développeur</title>
-    <style>
-        body { font-family: Ubuntu, Arial, sans-serif; background: #0F141C; color: #E6EDF3; margin: 0; padding: 40px 20px; }
-        .container { max-width: 800px; margin: 0 auto; }
-        h1 { color: #00A3E0; border-bottom: 2px solid #1B2230; padding-bottom: 12px; margin-bottom: 6px; }
-        p.subtitle { color: #8B949E; margin-bottom: 30px; font-size: 0.95rem; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 20px; }
-        .card { background: #1B2230; border: 1px solid #2B3545; border-radius: 8px; padding: 20px; text-decoration: none; color: inherit; transition: border-color 0.2s; }
-        .card:hover { border-color: #00A3E0; }
-        .card h3 { margin: 0 0 8px 0; color: #00A3E0; font-size: 1.1rem; }
-        .card p { margin: 0; font-size: 0.9rem; color: #8B949E; line-height: 1.4; }
-        footer { margin-top: 50px; font-size: 0.85rem; color: #6E7681; text-align: center; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Webcorp &mdash; Portail Développeur</h1>
-        <p class="subtitle">Environnement local Webcorp-OS (Trisquel 12 LTS Ecne Mini &mdash; SAE 103)</p>
-        
-        <div class="grid">
-            <a class="card" href="/phpmyadmin/">
-                <h3>phpMyAdmin</h3>
-                <p>Administration visuelle des bases de données MariaDB.</p>
-            </a>
-            <a class="card" href="http://localhost:3000/">
-                <h3>Forgejo Git</h3>
-                <p>Forge logicielle locale et gestion des dépôts Git.</p>
-            </a>
-            <a class="card" href="/info.php">
-                <h3>Configuration PHP</h3>
-                <p>Informations sur la version et les modules PHP 8.3.</p>
-            </a>
-        </div>
-        
-        <footer>Webcorp-OS &mdash; Développé par Jules, Joey et Matthieu</footer>
-    </div>
-</body>
-</html>
-EOF
-chown root:www-data /var/www/html/index.html
-chmod 664 /var/www/html/index.html
-
 # Éditeur de code léger (Geany)
 apt-get install -y geany geany-plugins
 
@@ -176,34 +127,5 @@ WantedBy=multi-user.target
 EOF
     systemctl enable forgejo.service 2>/dev/null || true
 fi
-
-# Script utilitaire de vérification de l'état des services
-cat << 'EOF' > /usr/local/bin/webcorp-status
-#!/bin/bash
-echo "=== État des services Webcorp-OS ==="
-
-check_service() {
-    local name="$1"
-    local unit="$2"
-    if systemctl is-active --quiet "$unit"; then
-        echo -e "[OK] $name"
-    else
-        echo -e "[NON ACTIF] $name"
-    fi
-}
-
-check_service "Serveur Web Apache" apache2
-check_service "Base de données MariaDB" mariadb
-check_service "Forge logicielle Forgejo (port 3000)" forgejo
-check_service "Sauvegarde automatique Restic (timer 2h)" webcorp-backup.timer
-
-if [ -w /var/www/html ]; then
-    echo "[OK] Espace /var/www/html (inscriptible par $USER)"
-else
-    echo "[ATTENTION] Espace /var/www/html (non inscriptible sans sudo)"
-fi
-echo "====================================="
-EOF
-chmod 755 /usr/local/bin/webcorp-status
 
 echo "Fin de l'étape 2."
