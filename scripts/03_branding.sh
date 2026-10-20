@@ -19,6 +19,9 @@ echo "--- 3. Personnalisation graphique ---"
 # Police Ubuntu
 apt-get install -y fonts-ubuntu || true
 
+# Affichage dans le terminal
+apt install toilet toilet-fonts -y
+
 # Copie du fond d'écran
 mkdir -p /usr/share/backgrounds/webcorp
 if [ -f "$IMAGE" ]; then
