@@ -20,8 +20,20 @@ if [ -f "$REPO_DIR/configs/skel/.my.cnf" ]; then
     chmod 400 /etc/skel/.my.cnf
 fi
 
+# Copie des cheatsheets (aide-mémoire HTML/CSS et alias)
+if [ -d "$REPO_DIR/configs/skel/cheatsheets" ]; then
+    mkdir -p /etc/skel/cheatsheets
+    cp -r "$REPO_DIR/configs/skel/cheatsheets/"* /etc/skel/cheatsheets/
+    chmod 644 /etc/skel/cheatsheets/*
+fi
+
 # Raccourcis sur le Bureau pour la démonstration
 for DESKTOP_DIR in "/etc/skel/Desktop" "/etc/skel/Bureau"; do
+    mkdir -p "$DESKTOP_DIR"
+    if [ -d "$REPO_DIR/configs/skel/cheatsheets" ]; then
+        mkdir -p "$DESKTOP_DIR/cheatsheets"
+        cp -r "$REPO_DIR/configs/skel/cheatsheets/"* "$DESKTOP_DIR/cheatsheets/"
+    fi
     cat << 'EOF' > "$DESKTOP_DIR/phpMyAdmin.desktop"
 [Desktop Entry]
 Version=1.0
@@ -68,5 +80,6 @@ if [ -f /etc/skel/.my.cnf ]; then
     cp /etc/skel/.my.cnf /root/.my.cnf 2>/dev/null || true
     chmod 400 /root/.my.cnf 2>/dev/null || true
 fi
+cp -r /etc/skel/cheatsheets /root/cheatsheets 2>/dev/null || true
 
 echo "Configuration de /etc/skel terminée !"

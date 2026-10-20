@@ -20,7 +20,7 @@ echo "--- 3. Personnalisation graphique ---"
 apt-get install -y fonts-ubuntu || true
 
 # Affichage dans le terminal
-apt install toilet toilet-fonts -y
+apt-get install -y toilet toilet-fonts || true
 
 # Copie du fond d'écran
 mkdir -p /usr/share/backgrounds/webcorp

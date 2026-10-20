@@ -23,7 +23,7 @@ Ce projet permet de créer une distribution Linux sur-mesure basée sur **Trisqu
   - Fond d'écran Webcorp.
   - Barre des tâches LXPanel placée en haut avec la couleur ardoise du thème.
   - Polices Ubuntu 11 appliquées sur le système et Openbox.
-  - Profil `/etc/skel` personnalisé avec prompt Git coloré et alias dans `.bashrc` et `.bash_profile`.
+  - Profil `/etc/skel` personnalisé avec prompt Git coloré, alias pratiques et aide-mémoires (HTML/CSS et alias) disponibles sur le Bureau et dans `~/cheatsheets/`.
 
 ---
 
