@@ -1,126 +1,95 @@
-# ~/.bashrc: executed by bash(1) for non-login shells. see /usr/share/doc/bash/examples/startup-files (in the package bash-doc) for examples
-# If not running interactively, don't do anything
+# ~/.bashrc : exécuté pour les shells interactifs non-login
+
+# Si la session n'est pas interactive, ne rien faire
 case $- in
     *i*) ;;
       *) return;;
 esac
 
-# Affichage du nom de l'entreprise et accueil
+# Accueil Webcorp
 if command -v toilet &>/dev/null; then
     toilet -w 100 WEBCORP
 fi
-echo "Bonjour $USER"
+echo "Bonjour $USER - Session de développement Webcorp"
+echo ""
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
-
-# append to the history file, don't overwrite it
+# Gestion de l'historique
+HISTCONTROL=ignoreboth:erasedups
 shopt -s histappend
+HISTSIZE=2000
+HISTFILESIZE=5000
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
-
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
+# Adapter la taille d'affichage aux changements de fenêtre
 shopt -s checkwinsize
 
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
-
-# make less more friendly for non-text input files, see lesspipe(1)
+# Support des fichiers compressés pour less
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# set variable identifying the chroot you work in (used in the prompt below)
+# Détection de chroot éventuel
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
-esac
+# Fonction pour afficher la branche Git courante
+parse_git_branch() {
+    git branch 2>/dev/null | sed -n '/* /s///p'
+}
 
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-#force_color_prompt=yes
+# Couleurs du thème Webcorp
+CYAN="\[\e[38;2;0;163;224m\]"
+AMBER="\[\e[38;2;229;169;60m\]"
+EMERALD="\[\e[38;2;46;204;113m\]"
+WHITE="\[\e[38;2;230;237;243m\]"
+GRAY="\[\e[38;2;139;148;158m\]"
+RESET="\[\e[0m\]"
 
-if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-        # We have color support; assume it's compliant with Ecma-48
-        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-        # a case would tend to support setf rather than setaf.)
-        color_prompt=yes
-    else
-        color_prompt=
-    fi
-fi
+# Invite de commande (prompt) personnalisée avec branche Git
+GIT_PROMPT="\$(b=\$(parse_git_branch); [ -n \"\$b\" ] && echo \" ${EMERALD}git:(\$b)${RESET}\")"
+PS1="${CYAN}\u${RESET}${GRAY}@${RESET}${WHITE}\h${RESET}:${AMBER}\w${RESET}${GIT_PROMPT} \$ "
 
-if [ "$color_prompt" = yes ]; then
-    PS1='\[\033[38;2;0;163;224m\]\u\[\033[0m\]@\h:\w\$ '
-else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
-unset color_prompt force_color_prompt
-
-# If this is an xterm set the title to user@host:dir
+# Titre du terminal xterm
 case "$TERM" in
 xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    PS1="\[\e]0;\u@\h: \w\a\]$PS1"
     ;;
 *)
     ;;
 esac
 
-# enable color support of ls and also add handy aliases
+# Couleurs pour ls
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
 
-#Some aliases for the Terminal
+# --- Alias Webcorp ---
 
+# Navigation et listes
+alias ll='ls -lah --color=auto'
+alias la='ls -A --color=auto'
+alias l='ls -CF --color=auto'
+alias sites='cd /var/www/html'
 
+# Sauvegarde chiffrée (Restic)
+alias backup-now='sudo /usr/local/bin/webcorp-backup.sh'
+alias backup-list='sudo /usr/local/bin/webcorp-backup-list.sh'
 
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$>"'
+# Recharger la configuration du terminal
+alias reload='source ~/.bashrc'
 
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
+# Alias personnels dans ~/.bash_aliases s'il existe
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
+# Autocomplétion bash
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
   elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
   fi
-fi
-
-if [ -f "$HOME/.atuin/bin/env" ]; then
-    . "$HOME/.atuin/bin/env"
-    command -v atuin &>/dev/null && eval "$(atuin init bash)"
-fi
-
-# Chargement du profil Webcorp (alias, prompt et variables)
-if [ -f "$HOME/.bash_profile" ]; then
-    . "$HOME/.bash_profile"
 fi
