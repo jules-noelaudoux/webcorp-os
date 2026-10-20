@@ -60,13 +60,6 @@ alias ns='npm start'
 # Recharge rapide
 alias reload='source ~/.bash_profile'
 
-# Bannière
-echo -e "${CYAN}"
-echo "╔══════════════════════════════════════╗"
-echo "║     TRISQUEL DEVWEB TERMINAL        ║"
-echo "╚══════════════════════════════════════╝"
-echo -e "${RESET}"
-
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
