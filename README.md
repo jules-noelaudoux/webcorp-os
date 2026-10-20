@@ -8,6 +8,7 @@ Ce projet permet de créer une distribution Linux sur-mesure basée sur **Trisqu
 
 - [ ] Installer Kodi
 - [ ] Configurer Kodi
+- [ ] Derniers checks
 
 ## Ce qui est installé et configuré
 
