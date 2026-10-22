@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# recuperer les chemins relatifs (problème pour installer dans n'imorte quel dossier)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)" 
 REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 echo "--- 4. Configuration de /etc/skel ---"
