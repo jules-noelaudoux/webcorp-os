@@ -9,6 +9,7 @@ Ce guide regroupe les commandes et alias personnalisés disponibles sur votre po
 | Commande / Alias | Commande réelle | Description |
 | :--- | :--- | :--- |
 | `sites` | `cd /var/www/html` | Se place directement dans le dossier racine de développement web. |
+| `webcorp-status` | `webcorp-status` | Diagnostic rapide de l'état des services (Apache, MariaDB, Forgejo, sauvegarde, dossier web). |
 | `mariadb` | `mariadb` (via `~/.my.cnf`) | Connexion directe au serveur SQL sans ressaisir l'identifiant et le mot de passe. |
 | `mysql` | `mysql` (via `~/.my.cnf`) | Équivalent à la commande mariadb ci-dessus. |
 

@@ -10,7 +10,7 @@ Le système est conçu comme un poste de travail prêt à l'emploi pour les dév
 - [ ] Installer Kodi
 - [ ] Configurer Kodi
 - [ ] Page d'accueil locale du portail développeur (index.html)
-- [ ] Script de diagnostic des services (webcorp-status)
+- [x] Script de diagnostic des services (webcorp-status)
 - [ ] Derniers checks
 
 ---
@@ -38,6 +38,7 @@ Le système est conçu comme un poste de travail prêt à l'emploi pour les dév
 | Commande | Action |
 | :--- | :--- |
 | `sites` | Se place directement dans `/var/www/html` pour travailler sur les projets web. |
+| `webcorp-status` | Affiche l'état des services (Apache, MariaDB, Forgejo, timer Restic, droits `/var/www/html`). |
 | `backup-now` | Déclenche immédiatement une sauvegarde chiffrée complète (bases SQL, `/var/www/html`, configs, Forgejo). |
 | `backup-list` | Affiche l'historique des snapshots Restic avec date et taille. |
 | `mariadb` | Connexion directe au client SQL sans mot de passe via le fichier `~/.my.cnf`. |
@@ -57,7 +58,7 @@ Deux aide-mémoires au format Markdown sont fournis sur le Bureau et dans le dos
 
 Le scénario de test pour la soutenance s'articule autour des étapes suivantes :
 1. **Démarrage et environnement** : vérifier le thème graphique (barre en haut, fond d'écran), les raccourcis du Bureau et l'accueil dans le terminal.
-2. **État des services** : vérifier qu'Apache (`systemctl status apache2`), MariaDB et Forgejo sont bien actifs.
+2. **État des services** : lancer `webcorp-status` pour s'assurer qu'Apache, MariaDB et Forgejo tournent.
 3. **Développement Web** : taper `sites`, créer un fichier dans `/var/www/html` sans `sudo`, et l'ouvrir sur `http://localhost/`.
 4. **Base de données** : tester la connexion SQL via la commande `mariadb`, puis sur l'interface `http://localhost/phpmyadmin` avec le compte `admin_local`.
 5. **Forge logicielle** : ouvrir Forgejo sur `http://localhost:3000`.
