@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Projets Web (/var/www/html)
+Comment=Dossier de développement local
+Exec=pcmanfm /var/www/html
+Icon=system-file-manager
+Terminal=false
+Categories=Development;

@@ -48,22 +48,12 @@ fi
 
 # Configuration PCManFM pour les utilisateurs (/etc/skel)
 mkdir -p /etc/skel/.config/pcmanfm/Trisquel-mini
-cat << EOF > /etc/skel/.config/pcmanfm/Trisquel-mini/pcmanfm.conf
-[desktop]
-wallpaper_mode=crop
-wallpaper=$DEST_IMAGE
-desktop_bg=#0F141C
-desktop_fg=#E6EDF3
-EOF
+cp "$REPO_DIR/configs/skel/.config/pcmanfm/Trisquel-mini/pcmanfm.conf" /etc/skel/.config/pcmanfm/Trisquel-mini/pcmanfm.conf
 
 # Script autostart pour appliquer le fond d'écran à l'ouverture de session
 mkdir -p /etc/xdg/autostart
-cat << 'EOF' > /usr/local/bin/set_wallpaper.sh
-#!/bin/bash
-sleep 1
-pcmanfm --set-wallpaper="/usr/share/backgrounds/webcorp/background.png" --wallpaper-mode=crop 2>/dev/null || true
-EOF
-chmod +x /usr/local/bin/set_wallpaper.sh
+cp "$REPO_DIR/configs/bin/set_wallpaper.sh" /usr/local/bin/set_wallpaper.sh
+chmod 755 /usr/local/bin/set_wallpaper.sh
 
 cp "$REPO_DIR/assets/autostart" /etc/xdg/autostart/set_wallpaper.desktop
 

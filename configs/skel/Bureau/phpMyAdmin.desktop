@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=phpMyAdmin
+Comment=Administration BDD MariaDB
+Exec=abrowser http://localhost/phpmyadmin
+Icon=applications-internet
+Terminal=false
+Categories=Development;

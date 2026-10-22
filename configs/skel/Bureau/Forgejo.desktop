@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Forgejo Git
+Comment=Forge logicielle locale
+Exec=abrowser http://localhost:3000
+Icon=applications-development
+Terminal=false
+Categories=Development;

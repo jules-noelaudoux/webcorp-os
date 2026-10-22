@@ -1,0 +1,6 @@
+[Unit]
+Description=Sauvegarde automatique Webcorp
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/webcorp-backup.sh
