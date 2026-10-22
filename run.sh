@@ -17,7 +17,7 @@ chmod +x scripts/*.sh
 echo "=== Installation terminée avec succès ! ==="
 
 echo "=== Nettoyage ==="
-
+service mariadb stop # Stop le service mariadb pour eviter des corruptions
 cd /root
 rm -rf /root/webcorp-os
 apt-get clean
