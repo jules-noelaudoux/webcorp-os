@@ -1,4 +1,6 @@
 #!/bin/bash
+
+#coupe le programme à la moindre erreur
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -17,7 +19,7 @@ cp "$REPO_DIR/configs/bin/webcorp-backup.sh" /usr/local/bin/webcorp-backup.sh
 cp "$REPO_DIR/configs/bin/webcorp-backup-list.sh" /usr/local/bin/webcorp-backup-list.sh
 chmod 755 /usr/local/bin/webcorp-backup.sh /usr/local/bin/webcorp-backup-list.sh
 
-# Raccourcis dans le PATH
+# Raccourcis dans le PATH pour les commandes backup
 ln -sf /usr/local/bin/webcorp-backup.sh /usr/local/bin/backup-now
 ln -sf /usr/local/bin/webcorp-backup-list.sh /usr/local/bin/backup-list
 
