@@ -7,7 +7,7 @@ check_service() {
     local nom="$1"
     local service="$2"
     if systemctl is-active --quiet "$service"; then
-        printf "  %-32s [OK]\n" "$nom"
+        printf "  %-32s [OK]\n" "$nom" # %-32s sert pour l'affichage propre
     else
         printf "  %-32s [INACTIF]\n" "$nom"
     fi
