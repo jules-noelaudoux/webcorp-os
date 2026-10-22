@@ -7,7 +7,7 @@ Le système est conçu comme un poste de travail prêt à l'emploi pour les dév
 
 ## TODO
 
-- [ ] Installer Kodi
+- [x] Installer Kodi
 - [ ] Configurer Kodi
 - [ ] Page d'accueil locale du portail développeur (index.html)
 - [x] Script de diagnostic des services (webcorp-status)
