@@ -49,7 +49,7 @@ chmod 750 /var/lib/forgejo
 chmod 640 /etc/forgejo/app.ini
 
 cp "$REPO_DIR/configs/systemd/forgejo.service" /etc/systemd/system/forgejo.service
-systemctl enable forgejo.service 2>/dev/null || true
+systemctl enable forgejo.service
 
 # Commande webcorp-status
 cp "$REPO_DIR/configs/bin/webcorp-status" /usr/local/bin/webcorp-status

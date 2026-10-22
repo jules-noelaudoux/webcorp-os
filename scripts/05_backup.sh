@@ -27,7 +27,6 @@ ln -sf /usr/local/bin/webcorp-backup-list.sh /usr/local/bin/backup-list
 cp "$REPO_DIR/configs/systemd/webcorp-backup.service" /etc/systemd/system/webcorp-backup.service
 cp "$REPO_DIR/configs/systemd/webcorp-backup.timer" /etc/systemd/system/webcorp-backup.timer
 
-systemctl daemon-reload 2>/dev/null || true
-systemctl enable webcorp-backup.timer 2>/dev/null || true
+systemctl enable webcorp-backup.timer
 
 echo "Étape 5 terminée."

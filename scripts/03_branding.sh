@@ -16,7 +16,7 @@ mkdir -p /usr/share/backgrounds/webcorp
 cp "$REPO_DIR/assets/background.png" "$DEST_IMAGE"
 
 # Écran de connexion (LXDM)
-sed -i "s|^bg=.*|bg=$DEST_IMAGE|" /etc/xdg/trisquel-mini/lxdm/lxdm.conf 2>/dev/null || true
+sed -i "s|^bg=.*|bg=$DEST_IMAGE|" /etc/xdg/trisquel-mini/lxdm/lxdm.conf
 
 # Bureau par défaut (PCManFM)
 for f in /etc/xdg/pcmanfm/LXDE/pcmanfm.conf /etc/xdg/pcmanfm/default/pcmanfm.conf; do
@@ -24,11 +24,11 @@ for f in /etc/xdg/pcmanfm/LXDE/pcmanfm.conf /etc/xdg/pcmanfm/default/pcmanfm.con
 done
 
 # Police de l'interface (LXSession et Openbox)
-sed -i "s|^sGtk/FontName=.*|sGtk/FontName=Ubuntu 11|" /etc/xdg/lxsession/Trisquel-mini/desktop.conf 2>/dev/null || true
+sed -i "s|^sGtk/FontName=.*|sGtk/FontName=Ubuntu 11|" /etc/xdg/lxsession/Trisquel-mini/desktop.conf
 for f in /etc/xdg/openbox/LXDE/rc.xml /etc/xdg/openbox/rc.xml; do
     [ -f "$f" ] && xmlstarlet ed -L \
         -u "/openbox_config/theme/font[@place='ActiveWindow']/name" -v "Ubuntu" \
-        -u "/openbox_config/theme/font[@place='ActiveWindow']/size" -v "11" "$f" 2>/dev/null || true
+        -u "/openbox_config/theme/font[@place='ActiveWindow']/size" -v "11" "$f"
 done
 
 # Barre des tâches LXPanel (en haut, hauteur 32, couleur thème sombre)
