@@ -12,8 +12,7 @@ apt upgrade -y
 
 # Paquets de base, pile LAMP et outils
 apt-get install -y \
-    curl wget git unzip xmlstarlet software-properties-common ca-certificates ssl-cert gnupg gpgv \
-    language-pack-fr language-pack-gnome-fr locales \
+    curl wget git unzip xmlstarlet software-properties-common ca-certificates ssl-cert \
     apache2 libapache2-mpm-itk \
     mariadb-server mariadb-client \
     php php-cli libapache2-mod-php php-mysql php-curl php-gd php-mbstring php-xml php-zip php-intl \
