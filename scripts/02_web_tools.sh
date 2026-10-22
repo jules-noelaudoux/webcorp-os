@@ -39,7 +39,7 @@ wget -q -O /usr/local/bin/forgejo "https://codeberg.org/forgejo/forgejo/releases
 chmod +x /usr/local/bin/forgejo
 
 # Utilisateur et répertoires Forgejo
-adduser --system --shell /bin/bash --group --disabled-password --home /home/git git || true
+adduser --system --shell /bin/bash --group --disabled-password --home /home/git git || true # laisse passer meme si user existe deja 
 mkdir -p /var/lib/forgejo/{data,custom,indexers,log} /etc/forgejo
 
 # Configuration et service Forgejo
