@@ -14,17 +14,9 @@ chown -R root:www-data /var/www/html
 chmod -R 775 /var/www/html
 chmod -R g+s /var/www/html
 
-# Configuration pour que les utilisateurs fassent partie du groupe www-data
-sed -i 's/^#*ADD_EXTRA_GROUPS=.*/ADD_EXTRA_GROUPS=1/' /etc/adduser.conf 2>/dev/null || true
-sed -i 's/^#*EXTRA_GROUPS=.*/EXTRA_GROUPS="users www-data"/' /etc/adduser.conf 2>/dev/null || true
-sed -i 's/^#*ADD_EXTRA_GROUPS=.*/ADD_EXTRA_GROUPS=1/' /etc/default/useradd 2>/dev/null || true
+# Les futurs utilisateurs feront partie du groupe www-data
+sed -i 's/^#*ADD_EXTRA_GROUPS=.*/ADD_EXTRA_GROUPS=1/' /etc/default/useradd
 grep -q "^EXTRA_GROUPS=" /etc/default/useradd && sed -i 's/^EXTRA_GROUPS=.*/EXTRA_GROUPS="www-data"/' /etc/default/useradd || echo 'EXTRA_GROUPS="www-data"' >> /etc/default/useradd
-
-# Attribution automatique de www-data aux utilisateurs
-cp "$REPO_DIR/configs/bin/webcorp-users.sh" /usr/local/bin/webcorp-users.sh
-chmod 755 /usr/local/bin/webcorp-users.sh
-cp "$REPO_DIR/configs/systemd/webcorp-users.service" /etc/systemd/system/webcorp-users.service
-systemctl enable webcorp-users.service
 
 # Page de test PHP
 cp "$REPO_DIR/configs/web/info.php" /var/www/html/info.php
