@@ -107,38 +107,7 @@ Ce document récapitule les balises HTML et les propriétés CSS indispensables 
 
 ---
 
-## 4. Modèle de boîte (Box Model)
-
-Chaque élément HTML est représenté par un rectangle composé de 4 couches :
-
-```text
-+---------------------------+
-|          Margin           |  (Marge externe)
-|  +---------------------+  |
-|  |       Border        |  |  (Bordure)
-|  |  +---------------+  |  |
-|  |  |    Padding    |  |  |  (Marge interne)
-|  |  |  +---------+  |  |  |
-|  |  |  | Contenu |  |  |  |
-+---------------------------+
-```
-
-```css
-* {
-    box-sizing: border-box; /* Recommandé : inclut padding et border dans width/height */
-}
-
-.carte {
-    width: 300px;
-    padding: 16px;
-    border: 1px solid #ccc;
-    margin: 20px auto;
-}
-```
-
----
-
-## 5. Mise en page avec Flexbox
+## 4. Mise en page avec Flexbox
 
 Pour aligner et distribuer facilement des éléments sur un axe :
 
@@ -159,7 +128,7 @@ Pour aligner et distribuer facilement des éléments sur un axe :
 
 ---
 
-## 6. Propriétés de texte et couleurs fréquentes
+## 5. Propriétés de texte et couleurs fréquentes
 
 ```css
 body {
