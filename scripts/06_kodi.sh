@@ -1,10 +1,12 @@
 #!/bin/bash
-
 set -e
 
 export DEBIAN_FRONTEND=noninteractive
 
-# installation de Kodi
-sudo apt install software-properties-common
-sudo add-apt-repository -y ppa:team-xbmc/ppa
-sudo apt install kodi -y
+echo "--- 6. Installation de Kodi ---"
+
+add-apt-repository -y ppa:team-xbmc/ppa
+apt-get update
+apt-get install -y kodi
+
+echo "Étape 6 terminée."

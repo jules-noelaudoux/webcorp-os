@@ -1,79 +1,53 @@
 #!/bin/bash
 set -e
 
-# Dossiers
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-# --- VARIABLES ---
-IMAGE="$REPO_DIR/assets/background.png"
 DEST_IMAGE="/usr/share/backgrounds/webcorp/background.png"
-POLICE="Ubuntu"
-TAILLE_POLICE=11
-HAUTEUR_BARRE=32
-COULEUR_BARRE=4126322925
-OPACITE=255
 
 echo "--- 3. Personnalisation graphique ---"
 
-# Police Ubuntu
-apt-get install -y fonts-ubuntu || true
+# Police Ubuntu et affichage du terminal
+apt-get install -y fonts-ubuntu toilet toilet-fonts
 
-# Affichage dans le terminal
-apt-get install -y toilet toilet-fonts || true
-
-# Copie du fond d'écran
+# Fond d'écran Webcorp
 mkdir -p /usr/share/backgrounds/webcorp
-if [ -f "$IMAGE" ]; then
-    cp "$IMAGE" "$DEST_IMAGE"
-fi
+cp "$REPO_DIR/assets/background.png" "$DEST_IMAGE"
 
-# Fond d'écran pour l'écran de connexion LXDM
-if [ -f /etc/xdg/trisquel-mini/lxdm/lxdm.conf ]; then
-    sed -i "s|^bg=.*|bg=$DEST_IMAGE|" /etc/xdg/trisquel-mini/lxdm/lxdm.conf
-fi
+# Écran de connexion (LXDM)
+sed -i "s|^bg=.*|bg=$DEST_IMAGE|" /etc/xdg/trisquel-mini/lxdm/lxdm.conf 2>/dev/null || true
 
-# Fond d'écran par défaut PCManFM
+# Bureau par défaut (PCManFM)
 for f in /etc/xdg/pcmanfm/LXDE/pcmanfm.conf /etc/xdg/pcmanfm/default/pcmanfm.conf; do
-    if [ -f "$f" ]; then
-        sed -i "s|^wallpaper=.*|wallpaper=$DEST_IMAGE|" "$f"
-        sed -i "s|^wallpaper_mode=.*|wallpaper_mode=crop|" "$f"
-    fi
+    [ -f "$f" ] && sed -i -e "s|^wallpaper=.*|wallpaper=$DEST_IMAGE|" -e "s|^wallpaper_mode=.*|wallpaper_mode=crop|" "$f"
 done
 
-# Police du système
-if [ -f /etc/xdg/lxsession/Trisquel-mini/desktop.conf ]; then
-    sed -i "s|^sGtk/FontName=.*|sGtk/FontName=$POLICE $TAILLE_POLICE|" /etc/xdg/lxsession/Trisquel-mini/desktop.conf
-fi
-
-# Police des titres des fenêtres Openbox
+# Police de l'interface (LXSession et Openbox)
+sed -i "s|^sGtk/FontName=.*|sGtk/FontName=Ubuntu 11|" /etc/xdg/lxsession/Trisquel-mini/desktop.conf 2>/dev/null || true
 for f in /etc/xdg/openbox/LXDE/rc.xml /etc/xdg/openbox/rc.xml; do
-    if [ -f "$f" ] && command -v xmlstarlet &>/dev/null; then
-        xmlstarlet ed -L \
-            -u "/openbox_config/theme/font[@place='ActiveWindow']/name" -v "$POLICE" \
-            -u "/openbox_config/theme/font[@place='ActiveWindow']/size" -v "$TAILLE_POLICE" \
-            "$f" 2>/dev/null || true
-    fi
+    [ -f "$f" ] && xmlstarlet ed -L \
+        -u "/openbox_config/theme/font[@place='ActiveWindow']/name" -v "Ubuntu" \
+        -u "/openbox_config/theme/font[@place='ActiveWindow']/size" -v "11" "$f" 2>/dev/null || true
 done
 
-# Barre des tâches lxpanel (placée en haut avec la couleur du thème)
+# Barre des tâches LXPanel (en haut, hauteur 32, couleur thème sombre)
 FICHIER_BARRE="/usr/share/lxpanel/profile/Trisquel-mini/panels/panel"
 if [ -f "$FICHIER_BARRE" ]; then
     sed -i \
-        -e 's/edge=bottom/edge=top/g' \
-        -e "s/height=[0-9]*/height=$HAUTEUR_BARRE/g" \
-        -e "s/usebackground=[0-9]*/usebackground=0/g" \
-        -e "s/backgroundcolor=[0-9]*/backgroundcolor=$COULEUR_BARRE/g" \
-        -e "s/backgroundalpha=[0-9]*/backgroundalpha=$OPACITE/g" \
+        -e 's/edge=bottom/edge=top/' \
+        -e 's/height=[0-9]*/height=32/' \
+        -e 's/usebackground=[0-9]*/usebackground=0/' \
+        -e 's/backgroundcolor=[0-9]*/backgroundcolor=4126322925/' \
+        -e 's/backgroundalpha=[0-9]*/backgroundalpha=255/' \
         "$FICHIER_BARRE"
-fi
 
-# Modèle pour les futurs utilisateurs dans /etc/skel
-mkdir -p /etc/skel/.config/lxpanel/Trisquel-mini/panels /etc/skel/.config/pcmanfm/Trisquel-mini
-if [ -f "$FICHIER_BARRE" ]; then
+    mkdir -p /etc/skel/.config/lxpanel/Trisquel-mini/panels
     cp "$FICHIER_BARRE" /etc/skel/.config/lxpanel/Trisquel-mini/panels/panel
 fi
 
+# Configuration PCManFM pour les utilisateurs (/etc/skel)
+mkdir -p /etc/skel/.config/pcmanfm/Trisquel-mini
 cat << EOF > /etc/skel/.config/pcmanfm/Trisquel-mini/pcmanfm.conf
 [desktop]
 wallpaper_mode=crop
@@ -82,26 +56,15 @@ desktop_bg=#0F141C
 desktop_fg=#E6EDF3
 EOF
 
-# Script autostart pour appliquer le fond d'écran au démarrage
+# Script autostart pour appliquer le fond d'écran à l'ouverture de session
 mkdir -p /etc/xdg/autostart
 cat << 'EOF' > /usr/local/bin/set_wallpaper.sh
 #!/bin/bash
-if command -v pcmanfm &>/dev/null; then
-    sleep 1
-    pcmanfm --set-wallpaper="/usr/share/backgrounds/webcorp/background.png" --wallpaper-mode=crop || true
-fi
+sleep 1
+pcmanfm --set-wallpaper="/usr/share/backgrounds/webcorp/background.png" --wallpaper-mode=crop 2>/dev/null || true
 EOF
 chmod +x /usr/local/bin/set_wallpaper.sh
 
-if [ -f "$REPO_DIR/assets/autostart" ]; then
-    cp "$REPO_DIR/assets/autostart" /etc/xdg/autostart/set_wallpaper.desktop
-fi
+cp "$REPO_DIR/assets/autostart" /etc/xdg/autostart/set_wallpaper.desktop
 
-# Si le script est testé directement dans une session graphique
-if [ -n "$DISPLAY" ]; then
-    pcmanfm --set-wallpaper="$DEST_IMAGE" --wallpaper-mode=crop 2>/dev/null || true
-    openbox --reconfigure 2>/dev/null || true
-    lxpanelctl restart 2>/dev/null || true
-fi
-
-echo "Configuration branding terminée !"
+echo "Étape 3 terminée."
