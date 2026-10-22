@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+
 export DEBIAN_FRONTEND=noninteractive
 
 echo "--- 2. Outils de développement Web ---"
@@ -128,38 +131,10 @@ EOF
     systemctl enable forgejo.service 2>/dev/null || true
 fi
 
-# Script utilitaire de vérification de l'état des services
-cat << 'EOF' > /usr/local/bin/webcorp-status
-#!/bin/bash
-# Diagnostic rapide des services Webcorp-OS
-
-echo "=== État des services Webcorp ==="
-
-check_service() {
-    local nom="$1"
-    local service="$2"
-    if systemctl is-active --quiet "$service"; then
-        printf "  %-32s [OK]\n" "$nom"
-    else
-        printf "  %-32s [INACTIF]\n" "$nom"
-    fi
-}
-
-check_service "Apache (serveur web)" apache2
-check_service "MariaDB (serveur SQL)" mariadb
-check_service "Forgejo (forge Git)" forgejo
-check_service "Sauvegarde Restic (timer)" webcorp-backup.timer
-
-echo ""
-echo "=== Espace de travail ==="
-if [ -w /var/www/html ]; then
-    printf "  %-32s [OK] (inscriptible)\n" "/var/www/html"
-elif [ -d /var/www/html ]; then
-    printf "  %-32s [ERREUR] (non inscriptible par %s)\n" "/var/www/html" "$USER"
-else
-    printf "  %-32s [NON TROUVE]\n" "/var/www/html"
+# Script utilitaire de diagnostic des services (webcorp-status)
+if [ -f "$REPO_DIR/configs/bin/webcorp-status" ]; then
+    cp "$REPO_DIR/configs/bin/webcorp-status" /usr/local/bin/webcorp-status
+    chmod 755 /usr/local/bin/webcorp-status
 fi
-EOF
-chmod 755 /usr/local/bin/webcorp-status
 
 echo "Fin de l'étape 2."

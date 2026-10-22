@@ -1,0 +1,29 @@
+#!/bin/bash
+# Diagnostic rapide des services Webcorp-OS
+
+echo "=== État des services Webcorp ==="
+
+check_service() {
+    local nom="$1"
+    local service="$2"
+    if systemctl is-active --quiet "$service"; then
+        printf "  %-32s [OK]\n" "$nom"
+    else
+        printf "  %-32s [INACTIF]\n" "$nom"
+    fi
+}
+
+check_service "Apache (serveur web)" apache2
+check_service "MariaDB (serveur SQL)" mariadb
+check_service "Forgejo (forge Git)" forgejo
+check_service "Sauvegarde Restic (timer)" webcorp-backup.timer
+
+echo ""
+echo "=== Espace de travail ==="
+if [ -w /var/www/html ]; then
+    printf "  %-32s [OK] (inscriptible)\n" "/var/www/html"
+elif [ -d /var/www/html ]; then
+    printf "  %-32s [ERREUR] (non inscriptible par %s)\n" "/var/www/html" "$USER"
+else
+    printf "  %-32s [NON TROUVE]\n" "/var/www/html"
+fi
