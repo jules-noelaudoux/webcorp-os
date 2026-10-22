@@ -7,6 +7,9 @@ echo "--- 1. Installation du système et de la pile LAMP ---"
 
 apt-get update
 
+# Mise a jour obligatoire suite a la CVE de PHP
+apt upgrade -y
+
 # Paquets de base, pile LAMP et outils
 apt-get install -y \
     curl wget git unzip xmlstarlet software-properties-common ca-certificates ssl-cert \
